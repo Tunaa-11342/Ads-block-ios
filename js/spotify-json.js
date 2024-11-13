@@ -1,4 +1,4 @@
-console.log(`spotify-json-2023.06.13`);
+console.log(`spotify-json-2024.11.13`);
 let url = $request.url;
 // console.log(`url:${url}`);
 if (url.includes('platform=iphone')) {
