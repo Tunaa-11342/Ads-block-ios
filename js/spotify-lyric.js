@@ -56,22 +56,23 @@ if(resStatus !== 200) {
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
         }, (error, response, data) => {
-            if(error) {
-                commonApi.msg(notifyName, '百度翻译', `error错误${error}`);
-                $done({});
-            } else if(response.status !== 200) {
-                commonApi.msg(notifyName, '百度翻译', `响应不为200:${response.status}`);
-                $done({});
-            } else {
-                const baiduResult = JSON.parse(data);
-                if(baiduResult.error_code && baiduResult.error_code !== '52000') {
-                    if (baiduResult.error_code === '54003') {
-                    } else if (baiduResult.error_code === '52003') {
-                        commonApi.msg(notifyName, '百度翻译', `未授权用户,请检查appid和密钥配置:${data}`);
-                    } else {
-                        commonApi.msg(notifyName, '百度翻译', `其他错误:${data}`);
-                    }
-                    $done({});
+        if (error) {
+            commonApi.msg(notifyName, 'Baidu Translate', `Error: ${error}`);
+            $done({});
+        } else if (response.status !== 200) {
+            commonApi.msg(notifyName, 'Baidu Translate', `Response status not 200: ${response.status}`);
+            $done({});
+} else {
+    const baiduResult = JSON.parse(data);
+    if (baiduResult.error_code && baiduResult.error_code !== '52000') {
+        if (baiduResult.error_code === '54003') {
+            // Optionally handle specific case for error code 54003 (e.g., too frequent requests)
+        } else if (baiduResult.error_code === '52003') {
+            commonApi.msg(notifyName, 'Baidu Translate', `Unauthorized user, please check appid and key configuration: ${data}`);
+        } else {
+            commonApi.msg(notifyName, 'Baidu Translate', `Other error: ${data}`);
+        }
+        $done({});
                 } else {
                     const transArr = baiduResult.trans_result.filter(trans => trans.src !== trans.dst)
                         .map(trans => [trans.src, trans.dst]);
